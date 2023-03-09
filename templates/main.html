@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}Test app{% endblock title%} </title>
+		<script src="https://kit.fontawesome.com/b6b499e9f6.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="/styleMain.css">
+        {% block headextra %} {% endblock headextra %}
+    </head>
+    <body>
+        <main>
+            <div id="bgElement" style="border-radius: 0px;"></div>
+            {% include "nav.html"%} 
+            {% block body %}</div>Test<div>{% endblock body %}
+            {% include "footer.html"%} 
+        </main>
+    </body>
+</html>

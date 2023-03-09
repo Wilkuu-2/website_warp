@@ -1,0 +1,15 @@
+{% extends "main.html" %}
+{% block title %}
+Error: {{ code }}
+{% endblock title %}
+{% block headextra %}
+{% endblock headextra %}
+{% block body %}
+<div class="color-complement-1">
+    <h1>Error: {{ code }}</h1>
+    <h4>Explaination:</h4>
+    <p class="color-complement-2">
+        {{ msg }}
+    </p>
+</div>
+{% endblock body %}

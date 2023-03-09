@@ -1,0 +1,29 @@
+{% extends "main.html" %}
+{% block title %}
+Wilkuu.xyz: Home Page
+{% endblock title %}
+{% block body %}
+<div id="aboutMe" class="FlexRow color-primary-1">
+    <section class="fitToContent color-primary-2">
+		<img width="400" src="/img/portrait.jpg" alt="This should be me :-[">
+    </section>
+    <section class="color-primary-0" style="margin-left: 4px; padding: 15px;">
+        <h2>Hello, my name is Jakub.</h2>
+        <p style="line-height: 20px;">
+            I'm a First year student at the University of Twente. I began studying Creative Technology in 2021, and so far everything goes smoothly.<br>
+            Originally I come from Poland, but I lived in the Hague for 10 years so I know Dutch as well. <br>
+            My talents are in programming and drawing. And I am planning to expand on both in the coming monthe <br>
+            I also like caring for <abbr title="At the moment i have 5 pots, but that number will probably increase">plants</abbr> and cook for myself and others.<br><br>
+        </p>
+        <h3>Here is some more info on me:</h3>
+        <table>
+            <tr><td>Age</td>								<td>19</td></tr>
+            <tr><td>Birthday</td>							<td>10th of August</td></tr>
+            <tr><td>Languages</td>							<td>Polish, Dutch, English</td></tr>
+            <tr><td>Zodiac sign</td>						<td>Leo</td></tr>
+            <tr><td>Cats or Dogs</td>						<td>Cats</td></tr>
+            <tr><td>Operating system<br>on my laptop</td>	<td><abbr title="I use arch btw">Linux</abbr></td></tr>
+        </table>
+    </section>
+</div>
+{% endblock body %}
