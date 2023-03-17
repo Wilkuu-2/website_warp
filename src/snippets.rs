@@ -33,7 +33,7 @@ impl SnippetPaths {
        let dir = std::fs::read_dir(PathBuf::from(path)).unwrap();
        let mut snip_paths: Vec<String> = Vec::with_capacity(prealoc);
 
-       for file in dir {
+       for file in dir{
            let file = file.unwrap();
            if file.file_type().unwrap().is_file() {
               let path = file.path();
@@ -43,9 +43,13 @@ impl SnippetPaths {
               }
            }
        }
+       
+       snip_paths.sort_unstable();
+
        if reverse {
-         snip_paths.reverse();
+           snip_paths.reverse();
        } 
+
        SnippetPaths { paths: snip_paths } 
     }
 }
