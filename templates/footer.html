@@ -1,49 +1,15 @@
 <div style="margin-bottom: 0%; padding: 0%;">    
     <style>
-		#bottomfoot{
-			background-color: var(--color-secondary-1-1);
-			margin: 0;
-			padding: 10px;
-			flex-wrap: nowrap;
-			align-content: center;
-			align-items: center;
-			overflow: hidden;
-		}
-		#bottomfoot > div {
-			flex-grow: 1;
-			text-align: center;
-		}
-		#bottomfoot > div:hover {
-			background-color: var(--color-secondary-1-1);
-		}
-		.f-button {
-			display: inline-block;
-		    box-sizing: content-box;
-			height: 2em;
-		}
-		.f-button > span {
-			vertical-align: middle;
-			display: inline-block;
-			padding: 1px;
-			padding-left: 1em;
-			height:  100%;
-			padding-top: 0.3em;
-		}
-	    .logo{
-			font-size: 200%;
-			float: left;
-			padding: 1px;
-		}
-		/*Override to accomodate for the footer being less wide than the screen (TODO: check if this necessary with the new dynamic system)*/
-		.FlexRow{
-		  flex-direction:  row;	
-		}
-		@media screen and (max-width:700px){
-	  .FlexRow {
-		 flex-direction: column;
-		 flex-wrap: wrap;
-	 }
-
+	/*Override to accomodate for the footer being less wide than the screen (TODO: check if this necessary with the new dynamic system)*/
+	.FlexRow{
+	  flex-direction:  row;	
+	}
+	@media screen and (max-width:700px){
+	 .FlexRow {
+	    flex-direction: column;
+	    flex-wrap: wrap;
+      }
+	}
 	</style>
     <footer id="bottomfoot" class="FlexRow">
         <div><!--Spacer --></div>
