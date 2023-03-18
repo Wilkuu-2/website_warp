@@ -296,32 +296,42 @@ header{
 	flex-direction: row;
 }
 
+.FlexRow > * {
+    flex: 1;
+    min-width: 0;
+}
+
 .FlexColumn {
 	display: flex;
 	flex-direction: column;
 }
 
-@media screen and (max-width:1080px){
+@media screen and (max-width:1440px){
 	.FlexRow {
+	    display: flex;
 		flex-direction: column;
 		flex-wrap: wrap;
 	}
 	main > div, main > section, main > object {
-		margin-left: 2%;
-		margin-right: 2%;
+		margin-left: 1%;
+		margin-right: 1%;
 	}
 }
 
 .fitToContent{
-	flex-basis: content;
-	flex-shrink: 0.01;
+    /* flex-basis: content; 
+	flex-shrink: 1;
+    flex-grow: 2; */
 }
 
-img{
+img, iframe, video{
 	max-height: 100%;
+	max-width: 100%;
+    width: 100%;
+    height: auto;
 }
+
 img > .fitToContent{
-	height: auto;
 }
 /* }}} */
 
