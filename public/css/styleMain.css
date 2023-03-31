@@ -81,7 +81,7 @@ main{
 	position: absolute;
 	left: -1000%;
 	top: -600%; 
-	background-image: url("./img/bg.png");
+	background-image: url("/img/bg.png");
 	animation-name: bgMove;
 	animation-duration: 150s;
 	animation-timing-function: linear;

@@ -36,8 +36,6 @@ struct Cli {
     ip: SocketAddr,
     #[command(subcommand)]
     security: Security,
-
-
 }
 
 
@@ -45,7 +43,6 @@ struct Cli {
 async fn main() {
     let args = Cli::parse();
 
-    
     let paths = crate::routes!();
 
     match &args.security {
