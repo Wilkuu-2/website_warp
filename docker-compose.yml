@@ -1,0 +1,29 @@
+version: '3.0'
+
+services: 
+  web:
+    image: wilkuu/website_warp
+    ports:
+      - "8080:8080"
+    volumes: 
+      - type: bind
+        source: ./templates
+        target: /opt/app/templates
+      - type: bind
+        source: ./public 
+        target: /opt/app/public
+      - type: bind
+        source: ./src
+        target: /opt/app/src
+      - type: bind
+        source: ./Cargo.toml
+        target: /opt/app/Cargo.toml
+      - type: bind
+        source: ./Cargo.lock
+        target: /opt/app/Cargo.lock
+      - type: bind
+        source: ./target
+        target: /opt/app/target
+    environment:
+      - WATCH=1 
+

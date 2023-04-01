@@ -1,0 +1,17 @@
+version: '3.0'
+
+services: 
+  web: 
+      extends:
+        file: "docker-compose.yml"
+        service: web
+      build: 
+          context: .
+          dockerfile: dockerfiles/dev/Dockerfile
+      volumes: 
+          - .:/opt/app
+      environment:
+          - RELEASE=0
+          - WATCH=1
+    
+

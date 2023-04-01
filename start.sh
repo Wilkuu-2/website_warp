@@ -1,4 +1,8 @@
-SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}") 
-#CARGO_HOME=$SCRIPT_DIR/.cargo cargo build --release 
-
-$SCRIPT_DIR/target/release/website_warp 0.0.0.0:8080 no-sec 
+if [ ${WATCH:=0} -gt 0 ] 
+then
+    echo "Watching for changes..." 
+    cargo watch -x 'run -- 0.0.0.0:8080 no-sec'
+else
+    echo "Straight to build..."
+    cargo run -- 0.0.0.0:8080 no-sec
+fi 

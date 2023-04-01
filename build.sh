@@ -1,4 +1,31 @@
-SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}") 
-echo $SCRIPT_DIR
-CARGO_HOME=$SCRIPT_DIR/.cargo cargo build --release 
-#$SCRIPT_DIR/target/release/website_warp "$IP:80" lets-encrypt jakub@wilkuu.xyz wilkuu.xyz
+#!/bin/bash
+
+set -e 
+
+subcommand=$1
+
+[[ ${RELEASE:=0} -gt 0 ]] && release_flag="--release" || release_flag="" 
+
+shift
+
+case "$subcommand" in
+    prep) 
+        cargo chef prepare $release_flag $@
+    ;;
+    cook)
+        cargo chef cook $release_flag $@
+    ;;
+    build)
+        cargo build $release_flag $@
+    ;;
+    production) 
+        docker compose -f docker-compose.yml -f docker-compose.prod.yml build
+    ;;
+    dev)
+        docker compose -f docker-compose.yml -f docker-compose.dev.yml build 
+    ;;
+    *)  
+        echo "Not a command: $subcommand" && exit 1
+    ;;
+esac 
+
