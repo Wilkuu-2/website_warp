@@ -1,26 +1,27 @@
-FROM rust as planner
-WORKDIR app
-RUN cargo install cargo-chef
-COPY . .
-RUN ./build.sh prep  --recipe-path recipe.json
+#FROM rust as planner
+#WORKDIR opt/app
+#COPY . .
+#RUN cargo install --config net.git-fetch-with-cli=true cargo-chef
+#RUN ./build.sh prep  --recipe-path recipe.json
 
-FROM rust as cacher
-WORKDIR app
-RUN cargo install cargo-chef
-COPY build.sh .
-COPY --from=planner /app/recipe.json recipe.json
-RUN RELEASE=1 ./build.sh cook --recipe-path recipe.json
+#FROM rust as cacher
+#WORKDIR opt/app
+#COPY build.sh .
+#COPY --from=planner /opt/app/.cargo .cargo
+#COPY --from=planner /opt/app/recipe.json recipe.json
+#RUN RELEASE=1 ./build.sh cook --recipe-path recipe.json
 
 FROM rust as builder
-WORKDIR app
+WORKDIR opt/app
 COPY . . 
-COPY --from=cacher /app/target target
+# COPY --from=cacher /opt/app/target target
+# COPY --from=cacher /opt/app/.cargo .cargo
 RUN RELEASE=1 ./build.sh build --bin website_warp
 
-FROM rust as runtime
-WORKDIR opt/app 
-COPY --from=builder /app/target/release/website_warp /usr/local/bin
-RUN ls
+FROM debian:buster-slim as runtime
+WORKDIR opt/app
+RUN apt-get update & apt-get install -y extra-runtime-dependencies & rm -rf /var/lib/apt/lists/*
+COPY --from=builder /opt/app/target/release/website_warp /usr/local/bin
 CMD ["website_warp", "0.0.0.0:8080", "no-sec"]
 EXPOSE 8080 
 
