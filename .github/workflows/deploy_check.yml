@@ -1,0 +1,22 @@
+on: 
+  pull_request: 
+    branches: 
+      - main
+
+jobs:
+  deploy: 
+    name: "Deploy check"
+    runs-on: ubuntu-18.04
+    steps: 
+      # Check out project 
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      # Build using the peon script on production
+      - name: Build 
+        run: ./peon.sh build production
+      
+      
+      
+      
+
