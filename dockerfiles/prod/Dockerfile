@@ -16,7 +16,7 @@ WORKDIR opt/app
 COPY . . 
 # COPY --from=cacher /opt/app/target target
 # COPY --from=cacher /opt/app/.cargo .cargo
-RUN RELEASE=1 ./build.sh build --bin website_warp
+RUN cargo build --release --bin website_warp 
 
 FROM debian:buster-slim as runtime
 WORKDIR opt/app

@@ -53,6 +53,8 @@ case "$action" in
     ;; 
     *)
         echo "Not an action: $action" && echo "Actions: build, up, down, sh, custom" 
+       echo "=----                                  ----=" 
+        exit 1 
     ;;
 esac
 
@@ -71,6 +73,7 @@ case "$MODE" in
     *)  
         echo "Not a mode: $MODE" && echo "Modes: production, dev" && exit 1
        echo "=----                                  ----=" 
+        exit 1 
     ;;
 esac 
 

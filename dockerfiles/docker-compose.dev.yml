@@ -9,7 +9,7 @@ services:
           context: ../
           dockerfile: dockerfiles/dev/Dockerfile
       volumes: 
-          - .:/opt/app
+          - ../:/opt/app
       environment:
           - RELEASE=0
           - WATCH=1
