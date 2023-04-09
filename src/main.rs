@@ -56,4 +56,6 @@ async fn main() {
             lets_encrypt(paths, &lea.email, &lea.domain).await.unwrap();
         },
     }
+
+    println!("Running on: {} !", args.ip);
 }
