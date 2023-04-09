@@ -5,7 +5,6 @@ mod error;
 mod snippets;
 
 use lets_encrypt_warp::lets_encrypt;
-use warp::Filter;
 use std::net::SocketAddr;
 use clap::{Subcommand,Parser,Args};
 use std::path::PathBuf;
@@ -43,7 +42,7 @@ struct Cli {
 async fn main() {
     let args = Cli::parse();
 
-    let paths = crate::routes!();
+    let paths = crate::routes::routes();
 
     match &args.security {
         Security::NoSec => {

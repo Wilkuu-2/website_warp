@@ -10,6 +10,6 @@ pub fn portfolio_page_wrapper(id: usize, snippet_path: &String) -> String {
 
 pub async fn portfolio_page() -> Result<Box<dyn Reply>, Rejection> {
     let ctx = Context::new();
-    let payload = render("portfolio.done",&ctx)?;
+    let payload = render("portfolio.done",&ctx).await?;
     Ok(Box::new(reply::html(payload)))
 } 

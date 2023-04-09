@@ -5,6 +5,7 @@ services:
       extends:
         file: "docker-compose.yml"
         service: web
+      image: wilkuu/website_warp
       build: 
           context: ../
           dockerfile: dockerfiles/dev/Dockerfile
