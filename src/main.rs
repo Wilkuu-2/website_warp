@@ -4,37 +4,21 @@ mod routes;
 mod error;
 mod snippets;
 
-use lets_encrypt_warp::lets_encrypt;
 use std::net::SocketAddr;
-use clap::{Subcommand,Parser,Args};
-use std::path::PathBuf;
+use clap::{Subcommand,Parser};
 
 
-#[derive(Args, Debug)]
-struct LetsEncryptArgs {
-    email: String,
-    domain: String,
-}
-
-#[derive(Args, Debug)]
-struct TlsArgs {
-    cert: PathBuf,
-    key: PathBuf,
-}
-
-#[derive(Subcommand, Debug)]
+#[derive(Subcommand,Clone, Copy, Debug)]
 enum Security {
     NoSec,
-    LetsEncrypt(LetsEncryptArgs),
-    Tls(TlsArgs),
-
 }
 
 #[derive(Parser, Debug)]
 struct Cli {
-    ip: SocketAddr,
     #[command(subcommand)]
-    security: Security,
+    security: Option<Security>,
+    #[arg()]
+    ip: Option<SocketAddr>,
 }
 
 
@@ -44,17 +28,14 @@ async fn main() {
 
     let paths = crate::routes::routes();
 
-    match &args.security {
+    let security: Security   = match &args.security {Some(sec) => *sec, None => Security::NoSec,};
+    let address: SocketAddr  = match &args.ip {Some(ip) => *ip, None => "0.0.0.0:8080".parse().unwrap()};
+
+    match security {
         Security::NoSec => {
-            warp::serve(paths).run(args.ip).await;
-        },
-        Security::Tls(tlsa) => {
-            warp::serve(paths).tls().cert_path(&tlsa.cert).key_path(&tlsa.key).run(args.ip).await; 
-        },
-        Security::LetsEncrypt(lea) => {
-            lets_encrypt(paths, &lea.email, &lea.domain).await.unwrap();
+            warp::serve(paths).run(address).await;
         },
     }
 
-    println!("Running on: {} !", args.ip);
+    println!("Running on: {} !", address);
 }

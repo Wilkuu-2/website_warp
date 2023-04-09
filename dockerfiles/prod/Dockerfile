@@ -23,7 +23,7 @@ WORKDIR opt/app
 RUN apt-get update & apt-get install -y extra-runtime-dependencies & rm -rf /var/lib/apt/lists/*
 ENV BUILDMODE=production
 COPY --from=builder /opt/app/target/release/website_warp /usr/local/bin
-CMD ["website_warp", "0.0.0.0:8080", "no-sec"]
+CMD ["website_warp"]
 EXPOSE 8080 
 
 
