@@ -6,8 +6,12 @@ services:
         file: "docker-compose.yml"
         service: web
       build: 
-          context: .
+          context: ../
           dockerfile: dockerfiles/prod/Dockerfile
+      volumes: 
+        - ./templates:/opt/app/templates
+        - type: bind
+        - ./public:/opt/app/public
       environment:
           - RELEASE=1
           - WATCH=0

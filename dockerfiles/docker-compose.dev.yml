@@ -6,7 +6,7 @@ services:
         file: "docker-compose.yml"
         service: web
       build: 
-          context: .
+          context: ../
           dockerfile: dockerfiles/dev/Dockerfile
       volumes: 
           - .:/opt/app

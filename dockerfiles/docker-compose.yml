@@ -1,0 +1,8 @@
+version: '3.0'
+
+services: 
+  web:
+    image: wilkuu/website_warp
+    ports:
+      - "8080:8080"
+
