@@ -19,5 +19,4 @@ warp = "0.3.3"
 tera = "1"
 lazy_static = "1.4.0"
 string-builder = "0.2.0"
-lets-encrypt-warp = "0.3.0"
 clap = { version = "4.1.8", features = ["derive"] }
