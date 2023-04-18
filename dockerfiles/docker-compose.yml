@@ -5,4 +5,32 @@ services:
     image: wilkuu/website_warp
     ports:
       - "8080:8080"
+    networks:
+      - default
+      - inner 
+    env_file:
+        - ../.env
+
+  mysql: 
+    image: mariadb
+    environment:
+       MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}' 
+       MYSQL_DATABASE: '${MYSQL_DATABASE}'
+       MYSQL_USER: '${MYSQL_USERNAME}'
+       MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
+       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    ports: 
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes: 
+      - mysql-data:/var/lib/mysql
+    networks:
+      - inner 
+
+volumes:
+    mysql-data:
+
+networks:
+  inner: 
+    driver: bridge
+
 

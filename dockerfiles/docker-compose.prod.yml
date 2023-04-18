@@ -15,3 +15,7 @@ services:
       environment:
           - RELEASE=1
           - WATCH=0
+  mysql: 
+      extends:
+        file: "docker-compose.yml"
+        service: mysql

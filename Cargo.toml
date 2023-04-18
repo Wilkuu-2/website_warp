@@ -16,6 +16,7 @@ debug = []
 [dependencies]
 tokio = {version = "1.26.0", features = ["full"] }
 warp = "0.3.3"
+sea-orm = { version = "^0", features = [ "sqlx-mysql", "runtime-tokio-rustls", "with-chrono", "with-json", "with-uuid", "macros" ] }
 tera = "1"
 lazy_static = "1.4.0"
 string-builder = "0.2.0"

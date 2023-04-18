@@ -9,6 +9,8 @@ shift
 ACTION=""
 MODE=$1
 
+docker_compose_base_args="compose -f dockerfiles/docker-compose.yml --env-file ./.env"
+
 function detect_container_type() {
     case "$MODE" in
         production|dev) 
@@ -19,7 +21,7 @@ function detect_container_type() {
         ;;
         *) 
             echo "=---- Detecting running container mode ----="
-            MODE=$(docker compose -f dockerfiles/docker-compose.yml exec web bash -c "echo \$BUILDMODE") 
+            MODE=$(docker $docker_compose_base_args exec web bash -c "echo \$BUILDMODE") 
             if [[ -z "$MODE" ]]; then
                 echo Could not detect mode. ; exit 1; 
             else
@@ -47,6 +49,10 @@ case "$action" in
         detect_container_type && shift 
         ACTION="exec web bash"
     ;;
+    db_sh)
+        detect_container_type && shift 
+        ACTION="exec mysql bash"
+    ;;
     custom)
         detect_container_type && shift
         ACTION=""
@@ -60,15 +66,14 @@ esac
 
 
 
-
 case "$MODE" in
     production) 
        echo "=----                                  ----=" 
-       docker compose -f dockerfiles/docker-compose.yml -f dockerfiles/docker-compose.prod.yml $ACTION $@
+       docker $docker_compose_base_args -f dockerfiles/docker-compose.prod.yml $ACTION $@
     ;;
     dev)
        echo "=----                                  ----=" 
-       docker compose -f dockerfiles/docker-compose.yml -f dockerfiles/docker-compose.dev.yml $ACTION $@
+       docker $docker_compose_base_args -f dockerfiles/docker-compose.dev.yml $ACTION $@
     ;;
     *)  
         echo "Not a mode: $MODE" && echo "Modes: production, dev" && exit 1

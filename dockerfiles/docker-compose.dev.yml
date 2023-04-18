@@ -16,3 +16,7 @@ services:
           - WATCH=1
     
 
+  mysql: 
+      extends:
+        file: "docker-compose.yml"
+        service: mysql
