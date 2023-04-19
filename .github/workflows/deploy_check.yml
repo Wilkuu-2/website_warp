@@ -14,7 +14,7 @@ jobs:
       
       # Build using the peon script on production
       - name: Build 
-        run: ./peon.sh build production
+        run: /bin/bash ./peon.sh build production
       
       
       
