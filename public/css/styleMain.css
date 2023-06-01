@@ -53,14 +53,6 @@ html{
 	}
 }
 
-main{
-	position: relative;
-	color: var(--text-0);
-	padding: 0px;
-    margin: 0px;
-    padding-bottom: 20px;    
-}
-
 #bgElement{
 	background-color: var(--backdrop-0);
 	position: fixed;
@@ -86,6 +78,14 @@ main{
 	animation-duration: 150s;
 	animation-timing-function: linear;
 	animation-iteration-count: infinite;
+}
+
+main{
+	position: relative;
+	color: var(--text-0);
+	padding: 0px;
+    margin: 0px;
+    padding-bottom: 20px;    
 }
 /* Site looks {{{1*/
 #articles{

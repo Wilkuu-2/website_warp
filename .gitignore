@@ -4,3 +4,4 @@
 /templates/portfolio
 /.cargo 
 /.keys
+.env
