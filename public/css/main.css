@@ -1,26 +1,34 @@
-    body {
-        min-height: 100vh;
-        display: grid;
-        grid-template-rows: auto 1fr auto;
-        justify-self: top;
-    }
-    footer>div {
-        font-size: 1.1rem;
-        align-items: center;
-    }
-    
-    .fb {
-        text-align: center;
-        padding-top: .1rem; 
-        padding-bottom: .1rem;
-        line-height: 1.2;
-    }
-     
-    .fb > i {
-        align-items: center;
-        font-size: 2.0rem;
-    }
+body {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    justify-self: top;
+}
 
-    .fb:hover {
-        background-color: #00000060;
-    }
+html {
+    overflow: hidden;
+    width: 100vw;
+}
+
+
+
+footer>div {
+    font-size: 1.1rem;
+    align-items: center;
+}
+
+.fb {
+    text-align: center;
+    padding-top: .1rem; 
+    padding-bottom: .1rem;
+    line-height: 1.2;
+}
+ 
+.fb > i {
+    align-items: center;
+    font-size: 2.0rem;
+}
+
+.fb:hover {
+    background-color: #00000060;
+}
