@@ -13,7 +13,7 @@ use warp::{
 use crate::snippets::SnippetPaths;
 use crate::snippets::SnippetWrapper;
 
-const TEMPLATES_PATH: &str = "templates/";
+pub const TEMPLATES_PATH: &str = "templates/";
 
 lazy_static! {
     pub static ref TERA: RwLock<Tera> = {
@@ -30,13 +30,6 @@ fn init_tera() -> Tera {
             }
         };
         
-        let paths = SnippetPaths::from_folder("templates/portfolio/", 20, true);
-        snippet_template_page(& mut tera,
-                              "portfolio.done",
-                              "portfolio.html",
-                              &paths, 
-                              crate::handlers::portfolio::portfolio_page_wrapper).unwrap();
-    
         tera.autoescape_on(vec![".html",".sql"]);
         tera
 }
@@ -60,17 +53,9 @@ impl From<tera::Error> for TemplateError {
     }
 }
 
-
 pub async fn reload_tera() -> Result<(), TemplateError> {
         let mut tera = TERA.write().await; 
         tera.full_reload()?;
-        let paths = SnippetPaths::from_folder("templates/portfolio/", 20, true);
-        snippet_template_page(& mut tera,
-                              "portfolio.done",
-                              "portfolio.html",
-                              &paths, 
-                              crate::handlers::portfolio::portfolio_page_wrapper)?;
-        
         Ok(())
 }
 
@@ -83,27 +68,35 @@ pub async fn render(name: &str, ctx: &Context) -> Result<String, Rejection> {
     }
 }
 
-pub fn snippet_template_page( tera: & mut Tera,
-                                template_name: &str,
-                                template_path: &str,
-                                   paths: &SnippetPaths,
-                                   wrapper: SnippetWrapper) -> Result<(), TemplateError> {
-    let paths: Vec<_> = paths.paths.clone();
+async fn render_one_off(page: &str, ctx: &Context) -> Result<String, Rejection>{
+    let mut tera = TERA.write().await;
+    match tera.render_str(page, &ctx) {
+        Ok(page) => Ok(page),
+        Err(err) => Err(custom(TemplateError::from(err))),
+    }
+}
+
+pub async fn snippet_template_page(super_path: &str,
+                                   snippets_path: &str,
+                                   wrapper: SnippetWrapper,
+                                   context: &Context) 
+    -> Result<String, Rejection> {
     
-    
+    let paths: Vec<_> = SnippetPaths::_from_folder_async(snippets_path, 30, true).await.paths.clone();
     let mut builder = string_builder::Builder::new(20 * paths.len());
 
     for (id, path) in paths.iter().enumerate() {
         builder.append(wrapper(id,&path.replace(TEMPLATES_PATH, "")));
     } 
-    let page: String = format!("
+    let page: String = format!(
+        "
         {{% extends \"{}\" %}}
         {{% block snippet_in %}}
             {}
         {{% endblock snippet_in %}}
-        ", template_path, 
+        ", 
+        super_path, 
         builder.string().unwrap_or(String::from("<div> ERROR Parsing snippet template failed </div>")));
-    
-    tera.add_raw_template(&template_name, &page).map_err(|err| {TemplateError::from(err)})
-
+        
+    render_one_off(&page, &context).await    
 }

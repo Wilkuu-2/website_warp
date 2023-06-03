@@ -10,8 +10,12 @@ pub fn routes() -> BoxedFilter<(impl Reply, )>{
     // All files 
     let public_files = warp::fs::dir("./public/");
     // Home page
-    let home_page = warp::path::end().and_then(home_page);
-    let portfolio_page = warp::path("portfolio").and_then(portfolio_page);
+    let home_page = warp::path::end().and_then(
+        || { static_page("index.html")});
+    let portfolio_page = warp::path("portfolio").and_then(
+        portfolio_page);
+    
+
     // Tera template tester 
     let tera_test = warp::get()
             .and(warp::path("tera"))
