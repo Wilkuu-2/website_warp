@@ -9,27 +9,41 @@ Jakub's Profdev Challenge
 {% endblock headextra %}
 
 {% block body %}
-<div class="card">
+<div class="card row">
     <div class="card-header">
-        <h1>My Profdev Journey</h1>
+        <h1>Welcome my Profdev Journey</h1>
     </div>
     <div class="card-body">
+        <div class=card-subtitle>
+            <h5>This page is a summative showcase of the 
+                <i><b><strike>suffering</strike></b></i>
+                experiences, we CreaTe students call ProfDev.
+            </h5>
+            <h6>
+            Even though I still did not manage to finish ProfDev 
+            </i>(Damn you Module 5!)<i>, I still got plenty to show.
+            </h6>
+        </div>
          
     </div>
 </div>
-<div class="justify-content-around my-2 row"> 
-    <div class="col-md-6">
-        <div class=card>
-            <div class="card-header">
-                <h2>Discovered strenghts</h2>
-            </div>
-            <div class="card-body">
-                 
-            </div>
-        </div>
+<div id="2" class="my-2 row"> 
+    <div class="col-lg-6">
+        {% include "pd_includes/challenges.html"%}
     </div>
-    <div class="col-md-6">
+    <div class="col-lg-6">
         {% include "pd_includes/adventures.html"%}
+    </div>
+</div>
+<div id="1" class="my-2 row"> 
+    <div class="col-lg-4 my-2">
+        {% include "pd_includes/strengths.html"%}
+    </div>
+    <div class="col-lg-4 my-2">
+        {% include "pd_includes/important_lessons.html"%}
+    </div>
+    <div class="col-lg-4 my-2">
+        {% include "pd_includes/tips.html"%}
     </div>
 </div>
 

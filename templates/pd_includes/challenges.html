@@ -1,0 +1,48 @@
+{% import "pd_includes/profdev_macros.html" as pm %}
+<div class="card">
+    <div class="card-header">
+        <h2>Challenges</h2>
+    </div>
+    <div class="card-body">
+        <nav>
+            <ul class="nav nav-tabs nav-fill" id="nav-tab-ch" role="tablist">
+                {{ pm::navbutton(
+                    content="Hard Skills",
+                    prefix="ch",
+                    num=1,
+                    is_active=true,
+                ) }} 
+
+                {{ pm::navbutton(
+                    content="Soft Skills",
+                    prefix="ch",
+                    num=2,
+                ) }} 
+                {{ pm::navbutton(
+                    content="Habits",
+                    prefix="ch",
+                    num=3,
+                ) }}
+                {{ pm::navbutton(
+                    content=`Networking&nbsp;<i class="fa-solid fa-skull"></i>`,
+                    prefix="ch",
+                    num=4,
+                ) }}
+            </ul>
+        </nav>
+        <div class="tab-content">
+            {{pm::navtab_start(prefix="ch",num=1,is_active=True)}}
+            Content 1
+            {{pm::navtab_finish()}}
+            {{pm::navtab_start(prefix="ch",num=2)}}
+            Content 2
+            {{pm::navtab_finish()}}
+            {{pm::navtab_start(prefix="ch",num=3)}}
+            Content 3
+            {{pm::navtab_finish()}}
+            {{pm::navtab_start(prefix="ch",num=4)}}
+            Content 4
+            {{pm::navtab_finish()}}
+        </div>
+    </div>
+</div>

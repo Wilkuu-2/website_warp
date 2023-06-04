@@ -24,9 +24,7 @@ pub fn routes() -> BoxedFilter<(impl Reply, )>{
 
     // Tera template tester 
     let tera_test = warp::get()
-            .and(warp::path("tera"))
-            .and(warp::path::param::<String>())
-            .and(warp::path::param::<String>())
+            .and(warp::path!("tera" / String / String))
             .boxed().and_then(crate::handlers::tera_test);
 
     let tera_reload = warp::get().and(warp::path("tera_reload")).boxed().and_then(tera_reload);    

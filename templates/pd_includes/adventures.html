@@ -6,27 +6,35 @@
     <div class="card-body">
         <nav>
             <ul class="nav nav-tabs nav-fill" id="nav-tab-adv" role="tablist">
-                {{pm::navbutton(
-                content="<h4>First Year</h4>",
+                {{ pm::navbutton(
+                    content="Job Hunting",
                     prefix="adv",
                     num=1,
-                    is_active=True,
-                )}}
-                {{pm::navbutton(
-                    content="<h4>Second Year</h4>",
+                    is_active=true,
+                ) }} 
+
+                {{ pm::navbutton(
+                    content="Beheer",
                     prefix="adv",
                     num=2,
-                )}}
+                ) }} 
+                {{ pm::navbutton(
+                    content="Dutch Business Days",
+                    prefix="adv",
+                    num=3,
+                ) }}
             </ul>
         </nav>
         <div class="tab-content">
             {{pm::navtab_start(prefix="adv",num=1,is_active=True)}}
             Content 1
             {{pm::navtab_finish()}}
-
             {{pm::navtab_start(prefix="adv",num=2)}}
             Content 2
             {{pm::navtab_finish()}}
-        <div>
+            {{pm::navtab_start(prefix="adv",num=3)}}
+            Content 3
+            {{pm::navtab_finish()}}
+        </div>
     </div>
 </div>
