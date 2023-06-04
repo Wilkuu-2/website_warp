@@ -41,7 +41,8 @@ pub enum TemplateError {
 impl fmt::Display for TemplateError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            TemplateError::TeraError(err)  => write!(f,"Tera had a fuckie wuckie: {}", err),
+            TemplateError::TeraError(err)  => write!(f,
+            "<b>Tera had a fuckie wuckie: {}</b><h4>Backtrace:</h4><pre>{:?}</pre>", err, err.source()),
         }
     }
 } 
@@ -52,6 +53,7 @@ impl From<tera::Error> for TemplateError {
         TemplateError::TeraError(value)
     }
 }
+
 
 pub async fn reload_tera() -> Result<(), TemplateError> {
         let mut tera = TERA.write().await; 
@@ -82,7 +84,7 @@ pub async fn snippet_template_page(super_path: &str,
                                    context: &Context) 
     -> Result<String, Rejection> {
     
-    let paths: Vec<_> = SnippetPaths::_from_folder_async(snippets_path, 30, true).await.paths.clone();
+    let paths: Vec<_> = SnippetPaths::from_folder_async(snippets_path, 30, true).await.paths.clone();
     let mut builder = string_builder::Builder::new(20 * paths.len());
 
     for (id, path) in paths.iter().enumerate() {

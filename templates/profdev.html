@@ -1,0 +1,37 @@
+{% import "pd_includes/profdev_macros.html" as pm %}
+{% extends "main.html" %}
+{% block title %}
+Jakub's Profdev Challenge
+{% endblock title %}
+
+{% block headextra %}
+<link rel="" type="css" href="/public/css/profdev.css">
+{% endblock headextra %}
+
+{% block body %}
+<div class="card">
+    <div class="card-header">
+        <h1>My Profdev Journey</h1>
+    </div>
+    <div class="card-body">
+         
+    </div>
+</div>
+<div class="justify-content-around my-2 row"> 
+    <div class="col-md-6">
+        <div class=card>
+            <div class="card-header">
+                <h2>Discovered strenghts</h2>
+            </div>
+            <div class="card-body">
+                 
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        {% include "pd_includes/adventures.html"%}
+    </div>
+</div>
+
+
+{% endblock body %}

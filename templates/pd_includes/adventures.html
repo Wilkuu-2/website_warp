@@ -1,0 +1,32 @@
+{% import "pd_includes/profdev_macros.html" as pm %}
+<div class="card">
+    <div class="card-header">
+        <h2>Noteworthy adventures</h2>
+    </div>
+    <div class="card-body">
+        <nav>
+            <ul class="nav nav-tabs nav-fill" id="nav-tab-adv" role="tablist">
+                {{pm::navbutton(
+                content="<h4>First Year</h4>",
+                    prefix="adv",
+                    num=1,
+                    is_active=True,
+                )}}
+                {{pm::navbutton(
+                    content="<h4>Second Year</h4>",
+                    prefix="adv",
+                    num=2,
+                )}}
+            </ul>
+        </nav>
+        <div class="tab-content">
+            {{pm::navtab_start(prefix="adv",num=1,is_active=True)}}
+            Content 1
+            {{pm::navtab_finish()}}
+
+            {{pm::navtab_start(prefix="adv",num=2)}}
+            Content 2
+            {{pm::navtab_finish()}}
+        <div>
+    </div>
+</div>
