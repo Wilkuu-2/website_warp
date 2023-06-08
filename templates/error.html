@@ -5,11 +5,13 @@ Error: {{ code }}
 {% block headextra %}
 {% endblock headextra %}
 {% block body %}
-<div class="color-complement-1">
-    <h1>Error: {{ code }}</h1>
-    <h4>Explaination:</h4>
-    <p class="color-complement-2">
-        {{ msg }}
-    </p>
+<div class="card">
+    <h1 class=card-header>Error: {{ code }}</h1>
+    <div class=card-body>
+        <h3>Explaination:</h3>
+        <div>
+            {{ msg | safe }}
+        </div>
+    </div>
 </div>
 {% endblock body %}

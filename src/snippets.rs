@@ -9,11 +9,7 @@ pub struct SnippetPaths {
 }
 
 impl SnippetPaths {
-    pub fn _with_capacity(cap: usize) -> SnippetPaths{
-        SnippetPaths { paths: Vec::with_capacity(cap) }
-    }
-
-    pub async fn _from_folder_async(path: &str, prealoc: usize, reverse: bool) -> SnippetPaths {
+    pub async fn from_folder_async(path: &str, prealoc: usize, reverse: bool) -> SnippetPaths {
        let mut dir = fs::read_dir(PathBuf::from(path)).await.unwrap();
        let mut snip_paths: Vec<String> = Vec::with_capacity(prealoc);
 
@@ -35,7 +31,7 @@ impl SnippetPaths {
        SnippetPaths{paths: snip_paths}
     }
 
-    pub fn from_folder(path: &str, prealoc: usize, reverse: bool) -> SnippetPaths {
+    pub fn _from_folder(path: &str, prealoc: usize, reverse: bool) -> SnippetPaths {
        let dir = std::fs::read_dir(PathBuf::from(path)).unwrap();
        let mut snip_paths: Vec<String> = Vec::with_capacity(prealoc);
 
@@ -79,7 +75,7 @@ impl Snippets {
     }
 
     pub async fn _from_folder_async(path: &str, len: usize) -> Snippets{
-       let paths = SnippetPaths::_from_folder_async(path,len,true).await;
+       let paths = SnippetPaths::from_folder_async(path,len,true).await;
        Snippets::_from_paths_async(&paths).await
     }
 }

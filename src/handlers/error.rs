@@ -8,25 +8,26 @@ use crate::error::RouteClosed;
 
 pub async fn handle_rejection(err: Rejection) -> Result<impl Reply, Infallible>{
     let mut ctx = Context::new();
-    let route_closed = err.find::<RouteClosed>();
+    let mut code: StatusCode = StatusCode::INTERNAL_SERVER_ERROR;
 
     if err.is_not_found() {
-        ctx.insert("code", &StatusCode::NOT_FOUND.as_u16());
+        code = StatusCode::NOT_FOUND;
         ctx.insert("msg", "The content you are looking for is not found");
     } else if let Some(_) = err.find::<warp::reject::MethodNotAllowed>() {
-       ctx.insert("code", &StatusCode::METHOD_NOT_ALLOWED.as_u16());
+        code = StatusCode::METHOD_NOT_ALLOWED;
        ctx.insert("msg", "Method not supported");
-    } else if let Some(_) = route_closed{
-        ctx.insert("code", &StatusCode::GONE.as_u16());
-        ctx.insert("msg", &format!("Route: {} has been closed", route_closed.unwrap().name));
+    } else if let Some(route_closed) = err.find::<RouteClosed>(){
+        code = StatusCode::GONE;
+        ctx.insert("msg", &format!("Route: {} has been closed", route_closed.name));
     } else if let Some(templaterror) = err.find::<TemplateError>() {
-        ctx.insert("code", &StatusCode::IM_A_TEAPOT.as_u16());
-        ctx.insert("msg", &format!("The templating engine has failed: {}", templaterror));
+        code = StatusCode::IM_A_TEAPOT;
+        ctx.insert("msg", &format!("{}", templaterror));
     } else {
-        ctx.insert("code", &StatusCode::INTERNAL_SERVER_ERROR.as_u16());
         ctx.insert("msg", "An unhandled exception found, contact the system administrator");
     } 
+
+    ctx.insert("code", &code.as_u16());
     let payload = render("error.html", &ctx).await.unwrap();
-    Ok(reply::html(payload))
+    Ok(reply::with_status(reply::html(payload), code))
 }
 
