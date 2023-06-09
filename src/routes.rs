@@ -4,11 +4,11 @@
 //
 //
 use crate::handlers::*;
-use warp::{Filter, filters::BoxedFilter, Reply};
+use warp::{Filter, filters::BoxedFilter, Reply, compression};
 
 pub fn routes() -> BoxedFilter<(impl Reply, )>{
     // All files 
-    let public_files = warp::fs::dir("./public/");
+    let public_files = warp::fs::dir("./public/").with(compression::gzip());
     // Home page
     let home_page = warp::path::end().and_then(
         || { static_page("index.html")});
@@ -19,8 +19,6 @@ pub fn routes() -> BoxedFilter<(impl Reply, )>{
     // Profdev Challange
     let profdev = warp::path!("profdev").and_then(
         || { static_page("profdev.html")});
-
-    
 
     // Tera template tester 
     let tera_test = warp::get()
