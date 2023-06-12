@@ -1,19 +1,8 @@
 use tera::Context;
 use warp::{reply::{self, Html},Rejection};
-use crate::{tera::snippet_template_page};
-use minify_html::{Cfg,minify};
-use lazy_static::lazy_static;
-
-// TODO: Config redundance
-lazy_static!{
-    static ref MCONFIG: Cfg = {
-        let mut cfg = Cfg::new();
-        
-        cfg.keep_closing_tags=true;
-
-        cfg
-    }; 
-}
+use crate::tera::snippet_template_page;
+use minify_html::minify;
+use crate::common::MINIFY_CONFIG;
 
 pub fn portfolio_page_wrapper(id: usize, snippet_path: &String) -> String {
     format!("<article id=\"A{}\" class=\"card border-primary row col-11 mb-4 pb-3 justify-content-around\">
@@ -30,7 +19,7 @@ pub async fn portfolio_page() -> Result<Box<Html<String>>,Rejection> {
    let page_minified: String = 
        String::from_utf8_lossy(
            &minify(&page.as_bytes(),
-                   &MCONFIG))
+                   &MINIFY_CONFIG))
        .to_string(); 
 
     Ok(Box::new(reply::html(page_minified)))

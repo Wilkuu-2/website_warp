@@ -3,6 +3,7 @@ mod tera;
 mod routes;
 mod error;
 mod snippets;
+mod common;
 
 use std::net::SocketAddr;
 use clap::{Subcommand,Parser};

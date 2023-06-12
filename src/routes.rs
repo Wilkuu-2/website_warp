@@ -4,11 +4,11 @@
 //
 //
 use crate::handlers::*;
-use warp::{Filter, filters::BoxedFilter, Reply, compression};
+use warp::{Filter, filters::BoxedFilter, Reply};
 
 pub fn routes() -> BoxedFilter<(impl Reply, )>{
     // All files 
-    let public_files = warp::fs::dir("./public/").with(compression::gzip());
+    let public_files = warp::fs::dir("./public/");
     // Home page
     let home_page = warp::path::end().and_then(
         || { static_page("index.html")});
