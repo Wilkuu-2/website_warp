@@ -4,4 +4,6 @@
 /templates/portfolio
 /.cargo 
 /.keys
+/log/*
+!/log/readme.md
 .env
