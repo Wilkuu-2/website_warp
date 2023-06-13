@@ -12,6 +12,7 @@ services:
       volumes: 
         - ../templates:/opt/app/templates
         - ../public:/opt/app/public
+        - ../log:/opt/app/log
       environment:
           - RELEASE=1
           - WATCH=0
