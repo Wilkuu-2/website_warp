@@ -27,6 +27,11 @@ pub fn routes() -> BoxedFilter<(impl Reply, )>{
 
     let tera_reload = warp::get().and(warp::path("tera_reload")).boxed().and_then(tera_reload);    
 
+    let log = warp::log("web::main");
+    let project_log = warp::log("web::projects::track");
+    let projects = warp::path("projects").and(
+        warp::path("inttech").and_then(|| {static_page("inttech.html")})
+        ).with(project_log); 
     
     // Put all of the routes together
     home_page
@@ -35,5 +40,6 @@ pub fn routes() -> BoxedFilter<(impl Reply, )>{
         .or(portfolio_page)
         .or(tera_reload)
         .or(profdev)
-        .recover(handle_rejection).boxed()
+        .or(projects)
+        .recover(handle_rejection).with(log).boxed()
 }

@@ -25,8 +25,8 @@ struct Cli {
 
 #[tokio::main]
 async fn main() {
+    pretty_env_logger::init();
     let args = Cli::parse();
-
     let paths = crate::routes::routes();
 
     let security: Security   = match &args.security {Some(sec) => *sec, None => Security::NoSec,};

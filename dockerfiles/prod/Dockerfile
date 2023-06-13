@@ -21,6 +21,9 @@ RUN cargo build --release --bin website_warp
 FROM debian:buster-slim as runtime
 WORKDIR opt/app
 RUN apt-get update & apt-get install -y extra-runtime-dependencies & rm -rf /var/lib/apt/lists/*
+RUN ln -sf /run/stdout ./website.log && \
+    ln -sf /run/stderr ./website.error
+
 ENV BUILDMODE=production
 COPY --from=builder /opt/app/target/release/website_warp /usr/local/bin
 CMD ["website_warp"]
