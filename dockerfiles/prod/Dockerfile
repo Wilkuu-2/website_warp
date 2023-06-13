@@ -24,7 +24,7 @@ RUN apt-get update & apt-get install -y extra-runtime-dependencies & rm -rf /var
 
 ENV BUILDMODE=production
 COPY --from=builder /opt/app/target/release/website_warp /usr/local/bin
-CMD ["sh", "-c", "website_warp 1>>/opt/app/log/website.log 2>>/opt/app/log/website.err"]
+CMD ["sh", "-c", "RUST_LOG=\"web::main=error,web::projects::track=info\" website_warp 1>>/opt/app/log/website.log 2>>/opt/app/log/website.err"]
 EXPOSE 8080 
 
 
