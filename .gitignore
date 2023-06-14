@@ -1,6 +1,7 @@
 /target
 /public/img
 /public/assets
+/public/docs
 /templates/portfolio
 /.cargo 
 /.keys
