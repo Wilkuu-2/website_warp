@@ -27,14 +27,14 @@ struct Cli {
 async fn main() {
     pretty_env_logger::init();
     let args = Cli::parse();
-    let paths = crate::routes::routes();
+    let web_routes = crate::routes::routes();
 
     let security: Security   = match &args.security {Some(sec) => *sec, None => Security::NoSec,};
     let address: SocketAddr  = match &args.ip {Some(ip) => *ip, None => "0.0.0.0:8080".parse().unwrap()};
 
     match security {
         Security::NoSec => {
-            warp::serve(paths).run(address).await;
+            warp::serve(web_routes).run(address).await;
         },
     }
 
