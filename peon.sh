@@ -28,6 +28,7 @@ function mode_parse() {
             echo "Mode: Development"
             MODE="dev"
             RUST_FLAGS="$RUST_FLAGS --features=debug"
+            export RUST_BACKTRACE=1
             ;;
         *)  
             echo "Not a mode: $MODE" && echo "Modes: production, dev" && echo "Assuming 'dev'"  
@@ -56,15 +57,25 @@ function peon_up() {
             exit 1
         fi
 
+        (peon_run >>log/website.log 2>>log/website.err; rm web.pid) &
+        echo $! > web.pid 
+}
+
+function peon_run(){
+        if [[ ! -z $(cat web.pid 2>> /dev/null) ]] 
+        then
+            peon_down 
+        fi
+        
         if [ ${WATCH:=0} -gt 0 ] 
         then
             echo "Watching for changes..."
-            (cargo watch -x "run $RUST_FLAGS" >>log/website.log 2>>log/website.err; rm web.pid) &
+            cargo watch -x "run $RUST_FLAGS"
         else 
             echo "Building and running once..."
-            (cargo run $RUST_FLAGS >>log/website.log 2>>log/website.err ; rm web.pid 2>>/dev/null)  &
+            cargo run $RUST_FLAGS
         fi
-        echo $! > web.pid 
+    
 }
 
 
@@ -78,7 +89,7 @@ function peon_restart(){
         peon_up
 }
 
-l_actions=("build" "up" "down" "restart")
+l_actions=("build" "up" "run" "down" "restart")
 
 case "$action" in
     ${l_actions[0]})
@@ -86,16 +97,21 @@ case "$action" in
         cargo build $RUST_FLAGS
     ;;
     ${l_actions[1]})
-        echo "== Starting up == "
+        echo "== Starting up as daemon == "
         peon_up
     ;;
     
     ${l_actions[2]})
+        echo "== Starting up == "
+        peon_run
+    ;;
+    
+    ${l_actions[3]})
         echo "== Shutting down == "
         peon_down
         
     ;;
-    ${l_actions[3]})
+    ${l_actions[4]})
         echo "== Restarting == "
         peon_restart
     ;;
