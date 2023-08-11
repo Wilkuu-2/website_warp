@@ -1,59 +1,112 @@
 #!/bin/bash
 
- set -e 
+set -e 
 
 # [[ ${RELEASE:=0} -gt 0 ]] && release_flag="--release" || release_flag="" 
 
 action=$1
 shift
-ACTION=""
-MODE=$1
+MODE=""
+RUST_FLAGS=""
+RUST_LOG_DEFAULT="web::main=error,web::projects::track=info"
+if [ -z $RUST_LOG ] 
+then
+    RUST_LOG="$RUST_LOG_DEFAULT"
+else 
+    RUST_LOG="$RUST_LOG,$RUST_LOG_DEFAULT"
+fi
 
-function detect_container_type() {
-    case "$MODE" in
-        production|dev) 
-            echo "=----     Accepting container mode     ----="
-            echo $MODE
-            return 0  
-            echo "=----                                  ----=" 
-        ;;
-        *) 
-            echo "=---- Detecting running container mode ----="
-            MODE=$(docker compose -f dockerfiles/docker-compose.yml exec web bash -c "echo \$BUILDMODE") 
-            if [[ -z "$MODE" ]]; then
-                echo Could not detect mode. ; exit 1; 
-            else
-                echo Mode: $MODE
-            fi 
-            return 1; 
-        ;;
-    esac
-} 
+function mode_parse() {
+    case "$1" in
+        production) 
+            echo "Mode: Production"
+            MODE="prod"
+            RUST_FLAGS="$RUST_FLAGS --release"
+            WATCH=0
+            ;;
+        dev)
+            echo "Mode: Development"
+            MODE="dev"
+            RUST_FLAGS="$RUST_FLAGS --features=debug"
+            ;;
+        *)  
+            echo "Not a mode: $MODE" && echo "Modes: production, dev" && echo "Assuming 'dev'"  
+            mode_parse "dev" 
+            ;;
+    esac 
+}
+
+mode_parse $1
+
+function peon_down() {
+    if [[ ! -z $(cat web.pid 2>> /dev/null) ]] 
+    then 
+        kill $(cat web.pid)
+        rm web.pid
+    else 
+        echo "App is not running"
+        exit 1
+    fi
+}
+
+function peon_up() {
+        if [[ ! -z $(cat web.pid 2>> /dev/null) ]] 
+        then
+            echo "App already running"
+            exit 1
+        fi
+
+        if [ ${WATCH:=0} -gt 0 ] 
+        then
+            echo "Watching for changes..."
+            cargo watch -x "run $RUST_FLAGS" >>log/website.log 2>>log/website.err &
+        else 
+            echo "Building and running once..."
+            cargo run $RUST_FLAGS >>log/website.log 2>>log/website.err &
+        fi
+        echo $! > web.pid 
+}
+
+
+function peon_restart(){
+        # restart when already running 
+        if [[ ! -z $(cat web.pid) ]] 
+        then
+            peon_down 
+        fi
+        
+        peon_up
+}
+
+l_actions=("build" "up" "down" "restart")
 
 case "$action" in
-    build)
-        detect_container_type && shift 
-        ACTION="build"
+    ${l_actions[0]})
+        echo "== Building == "
+        cargo build $RUST_FLAGS
     ;;
-    up)
-        detect_container_type && shift 
-        ACTION="up"
+    ${l_actions[1]})
+        echo "== Starting up == "
+        peon_up
     ;;
-    down)
-        detect_container_type && shift 
-        ACTION="down"
+    
+    ${l_actions[2]})
+        echo "== Shutting down == "
+        peon_down
+        
     ;;
-    sh)
-        detect_container_type && shift 
-        ACTION="exec web bash"
+    ${l_actions[3]})
+        echo "== Restarting == "
+        peon_restart
     ;;
-    custom)
-        detect_container_type && shift
-        ACTION=""
-    ;; 
     *)
-        echo "Not an action: $action" && echo "Actions: build, up, down, sh, custom" 
-       echo "=----                                  ----=" 
+        echo "Not an action: $action" 
+        echo "Actions:"
+
+        for act in ${l_actions[@]}; do
+            echo "    - $act"
+        done 
+
         exit 1 
     ;;
 esac
@@ -61,19 +114,4 @@ esac
 
 
 
-case "$MODE" in
-    production) 
-       echo "=----                                  ----=" 
-       docker compose -f dockerfiles/docker-compose.yml -f dockerfiles/docker-compose.prod.yml $ACTION $@
-    ;;
-    dev)
-       echo "=----                                  ----=" 
-       docker compose -f dockerfiles/docker-compose.yml -f dockerfiles/docker-compose.dev.yml $ACTION $@
-    ;;
-    *)  
-        echo "Not a mode: $MODE" && echo "Modes: production, dev" && exit 1
-       echo "=----                                  ----=" 
-        exit 1 
-    ;;
-esac 
 
