@@ -59,10 +59,10 @@ function peon_up() {
         if [ ${WATCH:=0} -gt 0 ] 
         then
             echo "Watching for changes..."
-            cargo watch -x "run $RUST_FLAGS" >>log/website.log 2>>log/website.err &
+            (cargo watch -x "run $RUST_FLAGS" >>log/website.log 2>>log/website.err; rm web.pid) &
         else 
             echo "Building and running once..."
-            cargo run $RUST_FLAGS >>log/website.log 2>>log/website.err &
+            (cargo run $RUST_FLAGS >>log/website.log 2>>log/website.err ; rm web.pid 2>>/dev/null)  &
         fi
         echo $! > web.pid 
 }
@@ -70,7 +70,7 @@ function peon_up() {
 
 function peon_restart(){
         # restart when already running 
-        if [[ ! -z $(cat web.pid) ]] 
+        if [[ ! -z $(cat web.pid 2>> /dev/null) ]] 
         then
             peon_down 
         fi
