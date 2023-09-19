@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e 
+set -e
 
 # [[ ${RELEASE:=0} -gt 0 ]] && release_flag="--release" || release_flag="" 
 
@@ -40,14 +40,8 @@ function mode_parse() {
 mode_parse $1
 
 function peon_down() {
-    if [[ ! -z $(cat web.pid 2>> /dev/null) ]] 
-    then 
-        kill $(cat web.pid)
-        rm web.pid
-    else 
-        echo "App is not running"
-        exit 1
-    fi
+    kill $(cat web.pid) || (echo "App is not running" ;  exit) 
+    rm web.pid
 }
 
 function peon_up() {

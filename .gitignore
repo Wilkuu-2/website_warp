@@ -9,3 +9,7 @@
 !/log/readme.md
 .env
 web.pid
+node_modules
+public/bundle.js
+public/bundle.js.map
+public/bundle.css
