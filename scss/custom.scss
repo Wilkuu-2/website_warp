@@ -1,3 +1,12 @@
+
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "../node_modules/bootstrap/scss/functions";
+
+// 2  Add any default variable overrides here 
+@import "./_variables.scss";
+
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+
 body {
     min-height: 100vh;
     display: grid;
@@ -36,3 +45,6 @@ footer>div {
 .fb:hover {
     background-color: #00000060;
 }
+
+@import './danger.scss';
+@import './animated_bg.scss';
